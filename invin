@@ -1,0 +1,6 @@
+[tomcat-servers]
+172.16.66.158
+
+[tomcat-servers:vars]
+ansible_user=root
+ansible_password=test32
