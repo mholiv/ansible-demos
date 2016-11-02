@@ -2,29 +2,5 @@
 
 - name: Simple test playbook
   hosts: all
-  vars:
-    - wsgi_home: /var/lib/awx/venv/tower
-  tasks:
-
-  - name: Copy file
-    copy:
-      src: README.md
-      dest: /tmp/
-
-  - name: Install HTTPD
-    yum:
-      name: httpd
-      state: present
-
-  - name: Copy over httpd conf file
-    template:
-      src: templates/awx-rr3.conf.j2
-      dest: /etc/httpd/conf.d/awx-443.conf
-    when: ansible_distribution == "RedHat"
-    notify: Restart httpd
-
-  handlers:
-    - name: Restart httpd
-      service:
-        state: restarted
-        name: ntpd
+  roles:
+    - roles/httpd
