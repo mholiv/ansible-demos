@@ -1,0 +1,31 @@
+---
+- name: Install NessusAgent
+  hosts: all
+  vars:
+    - nessus_key: NESSUS_KEY_HERE
+    - nessus_host: MYHOSTHERE
+    - nessus_rpm_key: http://satellite.mydomain.com/mykey
+  tasks:
+
+    - name: Add RPM key
+      rpm_key:
+        key: '{{ nessus_rpm_key }}'
+        state: present
+
+    - name: Install Nessus
+      yum:
+        name: NessusAgent
+      register: installed
+      notify: Start and Enable the NessusAgent
+
+    - name: Configure NessusAgent
+      command: '/opt/nessus_agent/sbin/nessuscli agent link --key={{ nessus_key }} --host={{ nessus_host }} --port=8834'
+      when: installed.changed
+      notify: Start and Enable the NessusAgent
+
+  handlers:
+    - name: Start and Enable the NessusAgent
+      service:
+        name: nessusagent
+        enabled: yes
+        state: restarted
