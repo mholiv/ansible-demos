@@ -1,0 +1,3 @@
+---
+# vars file for ibm-license-metric-tool
+use_nonprod: false

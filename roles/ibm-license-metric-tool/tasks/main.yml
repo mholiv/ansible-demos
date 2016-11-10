@@ -1,0 +1,19 @@
+---
+# tasks file for ibm-license-metric-tool
+
+- name: Set prod or no prod
+  set_fact:
+    use_nonprod: true
+  when: '{{ ansible_domain }}' == 'dev.cbp.dhs.gov' or '{{ ansible_domain }}' == 'atsdev.cbp.dhs.gov' or '{{ ansible_domain }}' == 'sat.cbp.dhs.gov'
+
+- include: copy_nonprod.yml
+  when: use_nonprod
+
+- include: copy_prod.yml
+  when: not use_nonprod
+
+
+- name: Install ibm-license-metric-tool
+  command: sh deploy_agent.sh
+    chdir: /data/lmt/
+  when: rpm_deploy.changed

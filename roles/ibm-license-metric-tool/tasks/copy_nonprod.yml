@@ -1,0 +1,22 @@
+---
+- name: Create working dir
+  file:
+    path: /data/lmt
+    state: directory
+
+
+- name: Copy over nonprod deploy_agent
+  get_url:
+    url: '{{ yum_repo_location }}/pub/LMT/nonprod/deploy_agent.sh'
+    dest: /data/lmt/deploy_agent.sh
+
+- name: Copy over nonprod response_file
+  get_url:
+    url: '{{ yum_repo_location }}/pub/LMT/nonprod/ILMT-TAD4D-agent-7.5.0.126-linux-x86.response_file'
+    dest: /data/lmt/ILMT-TAD4D-agent-7.5.0.126-linux-x86.response_file
+
+- name: Copy over nonprod ILMT-TAD4D-agent rpm
+  get_url:
+    url: '{{ yum_repo_location }}/pub/LMT/nonprod/ILMT-TAD4D-agent-7.5.0.126-linux-x86.rpm'
+    dest: /data/lmt/ILMT-TAD4D-agent-7.5.0.126-linux-x86.rpm
+  register: rpm_deploy
