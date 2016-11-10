@@ -1,0 +1,15 @@
+---
+- name: Install avaliable updates one by one
+  hosts: all
+  tasks:
+
+    # This is a dirty way to do it but it works
+    - name: Get a list of avaliable updates as a list
+      shell: yum check-update | awk '(NR >=4) {print $1;}' | sed s/\.[^\.]*$// | sed '/^[0-9]/d'
+      register: list
+
+    - name: Install items one at a time
+      yum:
+        name: '{{ item }}'
+        state: latest
+      with_items: '{{ list.stdout_lines }}'
