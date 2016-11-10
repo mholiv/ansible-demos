@@ -3,4 +3,4 @@
 - name: Simple test playbook
   hosts: all
   roles:
-    - roles/httpd
+    - roles/httpd-sample
