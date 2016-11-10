@@ -1,0 +1,39 @@
+---
+# defaults file for emagent
+
+# version
+emagent_version: 12.1.0.3.0
+
+# installation base directory
+emagent_base: /opt/oracle
+
+# installation directory
+emagent_dir: agent12c
+
+# port for emagent
+emagent_port: 3872
+
+# OMS host
+emagent_oms_host:
+
+# OMS upload host
+emagent_oms_port: 1159
+
+# OMS agent registration password
+emagent_oms_password: 
+
+# list of dependencies
+emagent_packages:
+  - bc
+  - setarch
+
+### Constants
+
+_emagent:
+  user: oracle
+  group: oinstall
+  users_home: /home
+  platform:
+    Linux:
+      x86: 46
+      x86_64: 226

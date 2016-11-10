@@ -1,0 +1,17 @@
+---
+galaxy_info:
+  author: Dariusz Owczarek
+  description: Oracle Enterprise Manager Agent deployment role
+  company: Sabre Inc.
+  license: MIT
+  min_ansible_version: 1.4
+  platforms:
+  - name: EL
+    versions:
+    - 5
+    - 6
+  categories:
+  - cloud
+  - database
+  - monitoring
+dependencies: []
