@@ -1,0 +1,17 @@
+---
+# tasks file for nessus
+- name: Add RPM key
+  rpm_key:
+    key: '{{ nessus_rpm_key }}'
+    state: present
+
+- name: Install Nessus
+  yum:
+    name: NessusAgent
+  register: installed
+  notify: Start and Enable the NessusAgent
+
+- name: Configure NessusAgent
+  command: '/opt/nessus_agent/sbin/nessuscli agent link --key={{ nessus_key }} --host={{ nessus_host }} --port=8834'
+  when: installed.changed
+  notify: Start and Enable the NessusAgent

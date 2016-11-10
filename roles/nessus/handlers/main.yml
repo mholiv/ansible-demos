@@ -1,0 +1,7 @@
+---
+# handlers file for nessus
+- name: Start and Enable the NessusAgent
+  service:
+    name: nessusagent
+    enabled: yes
+    state: restarted
