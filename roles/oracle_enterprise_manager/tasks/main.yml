@@ -10,7 +10,8 @@
   tags: check
 
 - name: emagent image file missing
-  fail: msg="Agent image file missing, prepare by executing
+  fail:
+    msg: "Agent image file missing, prepare by executing
              emcli get_agentimage -platform=\"{{ ansible_system }} {{ ansible_architecture | replace('_', '-') }}\"
                                   -version={{ emagent_version }}
                                   -destination=/tmp"
@@ -19,54 +20,73 @@
   tags: check
 
 - name: checking emagent port
-  wait_for: host={{ inventory_hostname }} port={{ emagent_port }} state=stopped timeout=1
+  wait_for:
+    host: '{{ inventory_hostname }} '
+    port: '{{ emagent_port }} '
+    state: stopped
+    timeout: 1
   tags: check
 
 - name: installing dependencies
-  yum: name={{ item }} state=present
+  yum:
+    name: '{{ item }} '
+    state: present
   with_items: emagent_packages
   tags: install
 
 - name: creating emagent group
-  group: name={{ _emagent.group }} state=present
-  #command: /usr/sbin/lgroupadd -g {{ emagent_group_id }} {{ _emagent.group }}
-  #failed_when: false
+  group:
+    name: '{{ _emagent.group }}'
+    state: present
   tags: user
 
 - name: creating emagent user
-  user: name={{ _emagent.user }} group={{ _emagent.group }} state=present
-  #command: /usr/sbin/luseradd -g {{ _emagent.group }} -u {{ emagent_user_id }} {{ _emagent.user }}
-  #failed_when: false
+  user:
+    name: '{{ _emagent.user }}'
+    group: '{{ _emagent.group }}'
+    state: present
   tags: user
 
 - name: creating base directory
-  file: path={{ emagent_base }} state=directory owner={{ _emagent.user }} group={{ _emagent.group }}
+  file:
+    path: '{{ emagent_base }}'
+    state: directory
+    owner: '{{ _emagent.user }}'
+    group: '{{ _emagent.group }}'
   tags: install
 
 - name: creating temporary directory
-  file: path=/tmp/ansible_emagent state=directory owner={{ _emagent.user }} group={{ _emagent.group }}
+  file:
+    path: /tmp/ansible_emagent
+    state: directory
+    owner: '{{ _emagent.user }}'
+    group: '{{ _emagent.group }}'
   tags: install
 
 - name: uploading emagent installer
-  unarchive: src=files/{{ emagent_version }}_AgentCore_{{ _emagent.platform[ansible_system][ansible_architecture] }}.zip
-             dest=/tmp/ansible_emagent
+  unarchive:
+    src: files/{{ emagent_version }}_AgentCore_{{ _emagent.platform[ansible_system][ansible_architecture] }}.zip
+    dest: /tmp/ansible_emagent
   tags: install
 
+# Need to test this
 - name: installing emagent
-  shell: cd /tmp/ansible_emagent;
-         ./agentDeploy.sh
+  shell: './agentDeploy.sh
          AGENT_BASE_DIR={{ emagent_base }}/{{ emagent_dir }}
          AGENT_INSTANCE_HOME={{ emagent_base }}/{{ emagent_dir }}/agent_inst
          ORACLE_HOSTNAME={{ inventory_hostname }}
          AGENT_PORT={{ emagent_port }}
          OMS_HOST={{ emagent_oms_host }}
          EM_UPLOAD_PORT={{ emagent_oms_port }}
-         AGENT_REGISTRATION_PASSWORD={{ emagent_oms_password }}
+         AGENT_REGISTRATION_PASSWORD={{ emagent_oms_password }}'
+    chdir: /tmp/ansible_emagent
   sudo_user: "{{ _emagent.user }}"
   tags: install
 
 - name: removing oem agent installer
-  file: path=/tmp/ansible_emagent state=absent
+  file:
+    path: /tmp/ansible_emagent
+    state: absent
   tags: install
 
 - name: executing root.sh configuration script
