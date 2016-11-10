@@ -1,0 +1,10 @@
+---
+# handlers file for splunk
+- name: Start Splunk
+  command: '/opt/splunkforwarder/bin/splunk start --accept-license'
+
+- name: Enable Splunk
+  command: '/opt/splunkforwarder/bin/splunk enable boot-start'
+
+- name: Enable Splunk
+  command: '/opt/splunkforwarder/bin/splunk set deploy-poll {{ splunk_host }}:8089 -auth admin:{{ splunk_admin_password }}'

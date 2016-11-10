@@ -1,0 +1,15 @@
+---
+# tasks file for splunk
+- name: Add RPM key
+  rpm_key:
+    key: '{{ splunk_rpm_key }}'
+    state: present
+
+- name: Install Splunk
+  yum:
+    name: splunkforwarder
+    state: present
+  notify:
+    - Start Splunk
+    - Enable Splunk
+    - Configure Splunk
