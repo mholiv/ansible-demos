@@ -30,6 +30,7 @@
   unarchive:
     src: /tmp/sep/file.tar
     dest: /tmp/sep/
+    copy: no
   when: not change.stat.exists
 
 
