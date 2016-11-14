@@ -12,10 +12,23 @@
     path: /tmp/sep/
   when: not change.stat.exists
 
-- name: Place endpoint protection agent installation files
+# - name: Place endpoint protection agent installation files
+#   unarchive:
+#     remote_src: yes
+#     src: '{{ remote_tar_loc }}'
+#     dest: /tmp/sep/
+#   when: not change.stat.exists
+
+- name: get tar file
+  get_url:
+    src: '{{ remote_tar_loc }}'
+    dest: /tmp/sep/file.tar
+  when: not change.stat.exists
+
+- name: Place tar file
   unarchive:
     remote_src: yes
-    src: '{{ remote_tar_loc }}'
+    src: /tmp/sep/file.tar
     dest: /tmp/sep/
   when: not change.stat.exists
 
