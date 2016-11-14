@@ -21,7 +21,7 @@
 
 - name: get tar file
   get_url:
-    src: '{{ remote_tar_loc }}'
+    url: '{{ remote_tar_loc }}'
     dest: /tmp/sep/file.tar
   when: not change.stat.exists
 
