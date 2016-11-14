@@ -27,7 +27,6 @@
 
 - name: Place tar file
   unarchive:
-    remote_src: yes
     src: /tmp/sep/file.tar
     dest: /tmp/sep/
   when: not change.stat.exists
