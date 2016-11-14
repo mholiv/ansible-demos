@@ -15,7 +15,7 @@ The variables that can be passed to this role and a brief description about them
 
 ```
 # The network location of the SEP tarball.
-remote_src: http://myserver.com/pub/SEP-1216.tar
+remote_tar_loc: http://myserver.com/pub/SEP-1216.tar
 ```
 
 Dependencies

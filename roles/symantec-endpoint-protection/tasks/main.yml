@@ -15,7 +15,7 @@
 - name: Place endpoint protection agent installation files
   unarchive:
     remote_src: yes
-    src: '{{ remote_src }}'
+    src: '{{ remote_tar_loc }}'
     dest: /tmp/sep/
   when: not change.stat.exists
 
