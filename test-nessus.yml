@@ -1,0 +1,6 @@
+---
+
+- name: Simple test playbook
+  hosts: all
+  roles:
+    - roles/nessus
