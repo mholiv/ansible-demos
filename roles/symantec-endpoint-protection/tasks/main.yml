@@ -23,6 +23,7 @@
   get_url:
     url: '{{ remote_tar_loc }}'
     dest: /tmp/sep/file.tar
+    mode: u=rw,g=r,o=r
   when: not change.stat.exists
 
 - name: Place tar file
