@@ -1,7 +1,10 @@
 ---
 - name: Windows demo
+  hosts: all
   vars:
     ansible_connection: winrm
+    ansible_port: 5986
+
   tasks:
     - name: touch winfile
       win_file:
