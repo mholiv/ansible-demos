@@ -1,0 +1,9 @@
+---
+- name: Windows demo
+  vars:
+    ansible_connection: winrm
+  tasks:
+    - name: touch winfile
+      win_file:
+        path: 'C:\test'
+        state: touch
