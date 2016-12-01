@@ -45,7 +45,8 @@
 - name: Enshure ntiviru started
   service:
     name: ntiviru
-    started: present
+    state: started
+    enabled: True
 
 - name: Check log location
   stat:
