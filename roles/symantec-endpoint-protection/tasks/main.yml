@@ -2,7 +2,8 @@
 # tasks file for symantec-endpoint-protection
 - name: test version
   command: /opt/Symantec/symantec_antivirus/sav info -p
-    register: out
+  register: out
+  
 - name: print info
   debug:
     msg: out.stdout_lines
