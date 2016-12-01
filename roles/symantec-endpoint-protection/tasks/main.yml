@@ -1,82 +1,89 @@
 ---
 # tasks file for symantec-endpoint-protection
-- name: Check if installed
-  stat:
-    path: /etc/Symantec.conf
-  register: change
+- name: test version
+  command: /opt/Symantec/symantec_antivirus/sav info -p
+    register: out
+- name: print info
+  debug:
+    msg: out.stdout_lines
 
-- name: Create Temp Folder
-  file:
-    state: directory
-    path: /tmp/sep/
-  when: not change.stat.exists
-
-- name: Place endpoint protection agent installation files
-  unarchive:
-    # remote_src: yes
-    src:  '{{ remote_tar_loc }}'
-    dest: /tmp/sep/
-  when: not change.stat.exists
-
-- name: Create Prereq group
-  group:
-    gid: 594
-    name: avdefs
-    state: present
-
-- name: Install Dependecies
-  yum:
-    name: '{{ item }}'
-    state: present
-  with_items:
-    - glibc.i686
-
-- name: Copy over conf
-  copy:
-    src: /tmp/sep/Linux/Symantec.conf
-    dest: /etc/
-    remote_src: True
-  when: not change.stat.exists
-
-- name: Install SEP
-  command: /tmp/sep/Linux/install.sh -i
-  when: not change.stat.exists
-
-- name: Enshure ntiviru started
-  service:
-    name: ntiviru
-    state: started
-    enabled: True
-
-- name: Check log location
-  stat:
-    path: /opt/Symantec/log
-  register: log_link
-  when: not change.stat.exists
-
-- name: Move file over
-  copy:
-    src: /var/log/symantec
-    dest: /opt/Symantec/log
-    remote_src: True
-  register: move_file
-  when: not log_link.exists
-
-- name: Delete original log location
-  file:
-    path: /var/log/symantec
-    state: absent
-  when: move_file.changed
-
-- name: Link to log location
-  file:
-    path: /var/log/symantec
-    src: /opt/Symantec/log
-    state: link
-  when: move_file.changed
-
-- name: Delete original installer
-  file:
-    path: /tmp/sep
-    state: absent
-  when: not change.stat.exists
+# - name: Check if installed
+#   stat:
+#     path: /etc/Symantec.conf
+#   register: change
+#
+# - name: Create Temp Folder
+#   file:
+#     state: directory
+#     path: /tmp/sep/
+#   when: not change.stat.exists
+#
+# - name: Place endpoint protection agent installation files
+#   unarchive:
+#     # remote_src: yes
+#     src:  '{{ remote_tar_loc }}'
+#     dest: /tmp/sep/
+#   when: not change.stat.exists
+#
+# - name: Create Prereq group
+#   group:
+#     gid: 594
+#     name: avdefs
+#     state: present
+#
+# - name: Install Dependecies
+#   yum:
+#     name: '{{ item }}'
+#     state: present
+#   with_items:
+#     - glibc.i686
+#
+# - name: Copy over conf
+#   copy:
+#     src: /tmp/sep/Linux/Symantec.conf
+#     dest: /etc/
+#     remote_src: True
+#   when: not change.stat.exists
+#
+# - name: Install SEP
+#   command: /tmp/sep/Linux/install.sh -i
+#   when: not change.stat.exists
+#
+# - name: Enshure ntiviru started
+#   service:
+#     name: ntiviru
+#     state: started
+#     enabled: True
+#
+# - name: Check log location
+#   stat:
+#     path: /opt/Symantec/log
+#   register: log_link
+#   when: not change.stat.exists
+#
+# - name: Move file over
+#   copy:
+#     src: /var/log/symantec
+#     dest: /opt/Symantec/log
+#     remote_src: True
+#   register: move_file
+#   when: not log_link.exists
+#
+# - name: Delete original log location
+#   file:
+#     path: /var/log/symantec
+#     state: absent
+#   when: move_file.changed
+#
+# - name: Link to log location
+#   file:
+#     path: /var/log/symantec
+#     src: /opt/Symantec/log
+#     state: link
+#   when: move_file.changed
+#
+# - name: Delete original installer
+#   file:
+#     path: /tmp/sep
+#     state: absent
+#   when: not change.stat.exists
