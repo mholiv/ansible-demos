@@ -87,10 +87,7 @@
   register: log_link
 
 - name: Move file over
-  copy:
-    src: /var/log/symantec
-    dest: /opt/Symantec/log
-    remote_src: True
+  command: 'cp /var/log/symantec/* /opt/Symantec/log/'
   register: move_file
   when: not log_link.stat.exists
 
