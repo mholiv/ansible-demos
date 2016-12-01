@@ -82,14 +82,15 @@
     enabled: True
 
 - name: Check log location
-  stat:
+  file:
     path: /opt/Symantec/log
+    state: directory
   register: log_link
 
 - name: Move file over
   command: 'cp /var/log/symantec/* /opt/Symantec/log/'
   register: move_file
-  when: not log_link.stat.exists
+  when: log_link.changed
 
 - name: Delete original log location
   file:
