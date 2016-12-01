@@ -3,6 +3,8 @@ splunk_agent_install
 
 Installs the Splunk agent.
 
+Vetted on test env
+
 Requirements
 ------------
 
