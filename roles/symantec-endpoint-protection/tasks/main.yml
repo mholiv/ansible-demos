@@ -37,7 +37,7 @@
 
 # Unarchive does not work
 - name: Place endpoint protection agent installation files
-  command: unzip /tmp/sep/sep.zip -d /tmp/sep/
+  command: 'unzip /tmp/sep/sep.zip -d /tmp/sep/'
   when: get_sev.changed
 
 
