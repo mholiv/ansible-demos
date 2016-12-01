@@ -1,52 +1,51 @@
 ---
 # tasks file for symantec-endpoint-protection
 
+- name: Enshure zip installed
+  yum:
+    name: unzip
+    state: present
+
 - name: Check if SAV is installed
   stat:
     path: /opt/Symantec/symantec_antivirus/sav
-  register: sav_installed
+  register: installed
 
 - name: test version
   command: /opt/Symantec/symantec_antivirus/sav info -p
   register: out
-  when: sav_installed.stat.exists
+  when: installed.stat.exists
 
 - name: print info
   debug:
     msg: out.stdout_lines
-  when: sav_installed.stat.exists
+  when: installed.stat.exists
 
-# - name: Check if installed
-#   stat:
-#     path: /etc/Symantec.conf
-#   register: change
-#
-# - name: Create Temp Folder
-#   file:
-#     state: directory
-#     path: /tmp/sep/
-#   when: not change.stat.exists
-#
-# - name: Place endpoint protection agent installation files
-#   unarchive:
-#     # remote_src: yes
-#     src:  '{{ remote_tar_loc }}'
-#     dest: /tmp/sep/
-#   when: not change.stat.exists
-#
-# - name: Create Prereq group
-#   group:
-#     gid: 594
-#     name: avdefs
-#     state: present
-#
-# - name: Install Dependecies
-#   yum:
-#     name: '{{ item }}'
-#     state: present
-#   with_items:
-#     - glibc.i686
-#
+- name: Create Temp Folder
+  file:
+    state: directory
+    path: /tmp/sep/
+  when: not installed.stat.exists
+
+- name: Place endpoint protection agent installation files
+  unarchive:
+    src:  '{{ remote_tar_loc }}'
+    dest: /tmp/sep/
+  when: not installed.stat.exists
+
+- name: Create Prereq group
+  group:
+    gid: 594
+    name: avdefs
+    state: present
+
+- name: Install Dependecies
+  yum:
+    name: '{{ item }}'
+    state: present
+  with_items:
+    - glibc
+
 # - name: Copy over conf
 #   copy:
 #     src: /tmp/sep/Linux/Symantec.conf
