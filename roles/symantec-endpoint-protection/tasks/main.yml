@@ -56,7 +56,7 @@
 
 - name: mark SEP +x
   file:
-    src: /tmp/sep/install.sh
+    path: /tmp/sep/install.sh
     mode: 0755
 
 - name: Install SEP
