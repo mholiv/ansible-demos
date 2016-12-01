@@ -31,6 +31,7 @@
   unarchive:
     src:  '{{ remote_tar_loc }}'
     dest: /tmp/sep/
+    remote_src: yes
   when: not installed.stat.exists
 
 - name: Create Prereq group
