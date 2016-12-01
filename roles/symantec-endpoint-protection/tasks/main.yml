@@ -93,7 +93,7 @@
     dest: /opt/Symantec/log
     remote_src: True
   register: move_file
-  when: not log_link.exists
+  when: not log_link.stat.exists
 
 - name: Delete original log location
   file:
