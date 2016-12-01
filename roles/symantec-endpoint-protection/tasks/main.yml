@@ -55,7 +55,7 @@
     - glibc
 
 - name: Install SEP
-  command: /tmp/sep/Linux/install.sh -i
+  command: /tmp/sep/install.sh -i
   when: not installed.stat.exists
 
 - name: Enshure ntiviru started
