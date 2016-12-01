@@ -5,34 +5,18 @@
     path: /etc/Symantec.conf
   register: change
 
-
 - name: Create Temp Folder
   file:
     state: directory
     path: /tmp/sep/
   when: not change.stat.exists
 
-# - name: Place endpoint protection agent installation files
-#   unarchive:
-#     remote_src: yes
-#     src: '{{ remote_tar_loc }}'
-#     dest: /tmp/sep/
-#   when: not change.stat.exists
-
-- name: get tar file
-  get_url:
-    url: '{{ remote_tar_loc }}'
-    dest: /tmp/sep/file.tar
-    mode: u=rw,g=r,o=r
-  when: not change.stat.exists
-
-- name: Place tar file
+- name: Place endpoint protection agent installation files
   unarchive:
-    src: /tmp/sep/file.tar
+    # remote_src: yes
+    src:  '{{ remote_tar_loc }}'
     dest: /tmp/sep/
-    copy: no
   when: not change.stat.exists
-
 
 - name: Create Prereq group
   group:
@@ -46,28 +30,11 @@
     state: present
   with_items:
     - glibc.i686
-    - java-1.7.0-oracle
 
 - name: Copy over conf
   copy:
     src: /tmp/sep/Linux/Symantec.conf
     dest: /etc/
-    remote_src: True
-  when: not change.stat.exists
-
-- name: Copy java US_export_policy.jar
-  copy:
-    dest: /usr/lib/jvm-private/java-1.7.0-oracle.x86_64/jce/vanilla/
-    src: /tmp/sep/Linux/UnlimitedJCEPolicy/US_export_policy.jar
-    backup: yes
-    remote_src: True
-  when: not change.stat.exists
-
-- name: Copy java local_policy.jar
-  copy:
-    dest: /usr/lib/jvm-private/java-1.7.0-oracle.x86_64/jce/vanilla/
-    src: /tmp/sep/Linux/UnlimitedJCEPolicy/local_policy.jar
-    backup: yes
     remote_src: True
   when: not change.stat.exists
 
