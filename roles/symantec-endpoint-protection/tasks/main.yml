@@ -63,9 +63,21 @@
   command: /tmp/sep/install.sh -i
   when: not installed.stat.exists
 
-- name: Enshure ntiviru started
+- name: Enshure rtvscand started
   service:
-    name: ntiviru
+    name: rtvscand
+    state: started
+    enabled: True
+
+- name: Enshure symcfgd started
+  service:
+    name: symcfgd
+    state: started
+    enabled: True
+
+- name: Enshure smcd started
+  service:
+    name: smcd
     state: started
     enabled: True
 
