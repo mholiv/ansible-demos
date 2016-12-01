@@ -1,12 +1,20 @@
 ---
 # tasks file for symantec-endpoint-protection
+
+- name: Check if SAV is installed
+  stat:
+    path: /opt/Symantec/symantec_antivirus/sav
+  register: sav_installed
+
 - name: test version
   command: /opt/Symantec/symantec_antivirus/sav info -p
   register: out
-  
+  when: sav_installed.stat.exists
+
 - name: print info
   debug:
     msg: out.stdout_lines
+  when: sav_installed.stat.exists
 
 # - name: Check if installed
 #   stat:
