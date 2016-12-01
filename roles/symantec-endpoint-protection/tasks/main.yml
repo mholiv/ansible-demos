@@ -54,52 +54,52 @@
   with_items:
     - glibc
 
-# - name: Copy over conf
-#   copy:
-#     src: /tmp/sep/Linux/Symantec.conf
-#     dest: /etc/
-#     remote_src: True
-#   when: not installed.stat.exists
-#
-# - name: Install SEP
-#   command: /tmp/sep/Linux/install.sh -i
-#   when: not installed.stat.exists
-#
-# - name: Enshure ntiviru started
-#   service:
-#     name: ntiviru
-#     state: started
-#     enabled: True
-#
-# - name: Check log location
-#   stat:
-#     path: /opt/Symantec/log
-#   register: log_link
-#   when: not installed.stat.exists
-#
-# - name: Move file over
-#   copy:
-#     src: /var/log/symantec
-#     dest: /opt/Symantec/log
-#     remote_src: True
-#   register: move_file
-#   when: not log_link.exists
-#
-# - name: Delete original log location
-#   file:
-#     path: /var/log/symantec
-#     state: absent
-#   when: move_file.changed
-#
-# - name: Link to log location
-#   file:
-#     path: /var/log/symantec
-#     src: /opt/Symantec/log
-#     state: link
-#   when: move_file.changed
-#
-# - name: Delete original installer
-#   file:
-#     path: /tmp/sep
-#     state: absent
-#   when: not installed.stat.exists
+- name: Copy over conf
+  copy:
+    src: /tmp/sep/Linux/Symantec.conf
+    dest: /etc/
+    remote_src: True
+  when: not installed.stat.exists
+
+- name: Install SEP
+  command: /tmp/sep/Linux/install.sh -i
+  when: not installed.stat.exists
+
+- name: Enshure ntiviru started
+  service:
+    name: ntiviru
+    state: started
+    enabled: True
+
+- name: Check log location
+  stat:
+    path: /opt/Symantec/log
+  register: log_link
+  when: not installed.stat.exists
+
+- name: Move file over
+  copy:
+    src: /var/log/symantec
+    dest: /opt/Symantec/log
+    remote_src: True
+  register: move_file
+  when: not log_link.exists
+
+- name: Delete original log location
+  file:
+    path: /var/log/symantec
+    state: absent
+  when: move_file.changed
+
+- name: Link to log location
+  file:
+    path: /var/log/symantec
+    src: /opt/Symantec/log
+    state: link
+  when: move_file.changed
+
+- name: Delete original installer
+  file:
+    path: /tmp/sep
+    state: absent
+  when: not installed.stat.exists
