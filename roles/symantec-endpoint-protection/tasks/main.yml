@@ -54,13 +54,6 @@
   with_items:
     - glibc
 
-- name: Copy over conf
-  copy:
-    src: /tmp/sep/Linux/Symantec.conf
-    dest: /etc/
-    remote_src: True
-  when: not installed.stat.exists
-
 - name: Install SEP
   command: /tmp/sep/Linux/install.sh -i
   when: not installed.stat.exists
