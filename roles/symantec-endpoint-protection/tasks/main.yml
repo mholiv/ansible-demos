@@ -27,12 +27,19 @@
     path: /tmp/sep/
   when: not installed.stat.exists
 
-- name: Place endpoint protection agent installation files
-  unarchive:
-    src:  '{{ remote_tar_loc }}'
-    dest: /tmp/sep/
-    remote_src: yes
+
+- name: Get SEV Tarball
+  get_url:
+    url: '{{ remote_tar_loc }}'
+    dest: /tmp/sep/sep.zip
   when: not installed.stat.exists
+  register: get_sev
+
+# Unarchive does not work
+- name: Place endpoint protection agent installation files
+  command: unzip  -d /tmp/sep/
+  when: get_sev.changed
+
 
 - name: Create Prereq group
   group:
@@ -52,11 +59,11 @@
 #     src: /tmp/sep/Linux/Symantec.conf
 #     dest: /etc/
 #     remote_src: True
-#   when: not change.stat.exists
+#   when: not installed.stat.exists
 #
 # - name: Install SEP
 #   command: /tmp/sep/Linux/install.sh -i
-#   when: not change.stat.exists
+#   when: not installed.stat.exists
 #
 # - name: Enshure ntiviru started
 #   service:
@@ -68,7 +75,7 @@
 #   stat:
 #     path: /opt/Symantec/log
 #   register: log_link
-#   when: not change.stat.exists
+#   when: not installed.stat.exists
 #
 # - name: Move file over
 #   copy:
@@ -95,4 +102,4 @@
 #   file:
 #     path: /tmp/sep
 #     state: absent
-#   when: not change.stat.exists
+#   when: not installed.stat.exists
