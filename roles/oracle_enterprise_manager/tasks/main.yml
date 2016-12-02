@@ -1,23 +1,6 @@
 ---
 # This role conains tasks to deploy the Oracle Enterprise Manager Agent
 
-- name: emagent image file check
-  command: ls files/{{ emagent_version }}_AgentCore_{{ _emagent.platform[ansible_system][ansible_architecture] }}.zip
-  connection: local
-  sudo: false
-  register: ls_emagent_image
-  changed_when: false
-  tags: check
-
-- name: emagent image file missing
-  fail:
-    msg: "Agent image file missing, prepare by executing
-             emcli get_agentimage -platform=\"{{ ansible_system }} {{ ansible_architecture | replace('_', '-') }}\"
-                                  -version={{ emagent_version }}
-                                  -destination=/tmp"
-  when: ls_emagent_image.stdout !=
-        "files/{{ emagent_version }}_AgentCore_{{ _emagent.platform[ansible_system][ansible_architecture] }}.zip"
-  tags: check
 
 - name: checking emagent port
   wait_for:
@@ -31,7 +14,7 @@
   yum:
     name: '{{ item }} '
     state: present
-  with_items: emagent_packages
+  with_items: '{{emagent_packages}}'
   tags: install
 
 - name: creating emagent group
@@ -63,23 +46,30 @@
     group: '{{ _emagent.group }}'
   tags: install
 
+# - name: uploading emagent installer
+#   unarchive:
+#     src: files/{{ emagent_version }}_AgentCore_{{ _emagent.platform[ansible_system][ansible_architecture] }}.zip
+#     dest: /tmp/ansible_emagent
+#   tags: install
+
 - name: uploading emagent installer
   unarchive:
-    src: files/{{ emagent_version }}_AgentCore_{{ _emagent.platform[ansible_system][ansible_architecture] }}.zip
+    src: '{{ oem_zip_path }}'
     dest: /tmp/ansible_emagent
+    remote_src: yes
   tags: install
 
 # Need to test this
 - name: installing emagent
-  shell: './agentDeploy.sh
+  shell: cd /tmp/ansible_emagent;
+         ./agentDeploy.sh
          AGENT_BASE_DIR={{ emagent_base }}/{{ emagent_dir }}
          AGENT_INSTANCE_HOME={{ emagent_base }}/{{ emagent_dir }}/agent_inst
          ORACLE_HOSTNAME={{ inventory_hostname }}
          AGENT_PORT={{ emagent_port }}
          OMS_HOST={{ emagent_oms_host }}
          EM_UPLOAD_PORT={{ emagent_oms_port }}
-         AGENT_REGISTRATION_PASSWORD={{ emagent_oms_password }}'
-    chdir: /tmp/ansible_emagent
+         AGENT_REGISTRATION_PASSWORD={{ emagent_oms_password }}
   sudo_user: "{{ _emagent.user }}"
   tags: install
 
