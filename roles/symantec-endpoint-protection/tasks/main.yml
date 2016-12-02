@@ -85,7 +85,6 @@
   stat:
     path: /var/log/symantec/
   register: log_link
-  when: not installed.stat.exists
 
 # - name: Move file over
 #   copy:
