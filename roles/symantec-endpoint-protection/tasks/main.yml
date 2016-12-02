@@ -58,6 +58,7 @@
   file:
     path: /tmp/sep/install.sh
     mode: 0755
+  when: not installed.stat.exists
 
 - name: Install SEP
   command: /tmp/sep/install.sh -i
