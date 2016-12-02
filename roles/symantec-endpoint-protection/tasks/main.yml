@@ -101,6 +101,12 @@
     state: absent
   when: not log_link.stat.islnk
 
+- name: Enshure new log location exists
+  file:
+    path: /opt/Symantec/log
+    state: directory
+  when: not log_link.stat.islnk
+
 - name: Link to log location
   file:
     path: /var/log/symantec
