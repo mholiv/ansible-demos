@@ -87,19 +87,19 @@
   register: log_link
   when: not installed.stat.exists
 
-- name: Move file over
-  copy:
-    src: /var/log/symantec
-    dest: /opt/Symantec/log
-    remote_src: True
-  when: log_link.stat.exists
-
-
-- name: Delete original log location
-  file:
-    path: /var/log/symantec
-    state: absent
-  when: log_link.stat.exists
+# - name: Move file over
+#   copy:
+#     src: /var/log/symantec
+#     dest: /opt/Symantec/log
+#     remote_src: True
+#   when: log_link.stat.exists
+#
+#
+# - name: Delete original log location
+#   file:
+#     path: /var/log/symantec
+#     state: absent
+#   when: log_link.stat.exists
 
 - name: Link to log location
   file:
