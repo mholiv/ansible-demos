@@ -95,18 +95,18 @@
 #   when: log_link.stat.exists
 #
 #
-# - name: Delete original log location
-#   file:
-#     path: /var/log/symantec
-#     state: absent
-#   when: log_link.stat.exists
+- name: Delete original log location
+  file:
+    path: /var/log/symantec
+    state: absent
+  when: not log_link.stat.islnk
 
 - name: Link to log location
   file:
     path: /var/log/symantec
     src: /opt/Symantec/log
     state: link
-  when: log_link.stat.exists
+  when: not log_link.stat.islnk
 
 - name: Delete original installer
   file:
