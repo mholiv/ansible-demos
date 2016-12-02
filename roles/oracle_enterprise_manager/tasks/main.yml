@@ -70,7 +70,7 @@
          OMS_HOST={{ emagent_oms_host }}
          EM_UPLOAD_PORT={{ emagent_oms_port }}
          AGENT_REGISTRATION_PASSWORD={{ emagent_oms_password }}
-  sudo_user: "{{ _emagent.user }}"
+  become_user: "{{ _emagent.user }}"
   tags: install
 
 - name: removing oem agent installer
