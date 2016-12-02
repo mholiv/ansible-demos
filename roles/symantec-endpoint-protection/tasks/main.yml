@@ -91,6 +91,7 @@
   copy:
     src: /var/log/symantec
     dest: /opt/Symantec/log
+    remote_src: True
   when: log_link.stat.exists
 
 
