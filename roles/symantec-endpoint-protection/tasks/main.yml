@@ -82,28 +82,30 @@
     enabled: True
 
 - name: Check log location
-  file:
-    path: /opt/Symantec/log
-    state: directory
+  stat:
+    path: /var/log/symantec/
   register: log_link
   when: not installed.stat.exists
 
 - name: Move file over
-  command: 'cp /var/log/symantec/* /opt/Symantec/log/'
-  when: not installed.stat.exists
+  copy:
+    src: /var/log/symantec
+    dest: /opt/Symantec/log
+  when: not log_link.stat.exists
+
 
 - name: Delete original log location
   file:
     path: /var/log/symantec
     state: absent
-  when: not installed.stat.exists
+  when: not log_link.stat.exists
 
 - name: Link to log location
   file:
     path: /var/log/symantec
     src: /opt/Symantec/log
     state: link
-  when: not installed.stat.exists
+  when: not log_link.stat.exists
 
 - name: Delete original installer
   file:
