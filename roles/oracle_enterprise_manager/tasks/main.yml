@@ -59,9 +59,7 @@
     mode: 0644
 
 - name: uploading emagent installer
-  unarchive:
-    src: /tmp/oem_agent_core.zip
-    dest: /tmp/ansible_emagent
+  command: 'unzip /tmp/oem_agent_core.zip -d /tmp/ansible_emagent'
   tags: install
 
 # Need to test this
