@@ -75,8 +75,6 @@
          OMS_HOST={{ emagent_oms_host }}
          EM_UPLOAD_PORT={{ emagent_oms_port }}
          AGENT_REGISTRATION_PASSWORD={{ emagent_oms_password }}
-    args:
-      chdir:
   #become_user: "{{ _emagent.user }}"
   tags: install
 
