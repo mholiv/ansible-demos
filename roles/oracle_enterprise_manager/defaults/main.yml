@@ -20,12 +20,13 @@ emagent_oms_host:
 emagent_oms_port: 1159
 
 # OMS agent registration password
-emagent_oms_password: 
+emagent_oms_password:
 
 # list of dependencies
 emagent_packages:
   - bc
-  - setarch
+  - unzip
+  #- setarch
 
 ### Constants
 
