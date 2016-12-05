@@ -64,14 +64,20 @@
   tags: install
   when: get.changed
 
-- name: Fix umask issue
+- name: Make folder
   file:
     path: /opt/oracle/agent12c
+    state: directory
+    recurse: yes
+    owner: '{{ _emagent.user }}'
+    group: '{{ _emagent.group }}'
+
+
 
 # Need to test this
 - name: installing emagent
   shell: cd /tmp/ansible_emagent;
-         /usr/sbin/runuser -l oracle -c "umask 027; cd /tmp/ansible_emagent ; ./agentDeploy.sh
+         /usr/sbin/runuser -l {{ _emagent.user }} -c "cd /tmp/ansible_emagent ; ./agentDeploy.sh
          AGENT_BASE_DIR={{ emagent_base }}/{{ emagent_dir }}
          AGENT_INSTANCE_HOME={{ emagent_base }}/{{ emagent_dir }}/agent_inst
          ORACLE_HOSTNAME={{ inventory_hostname }}
