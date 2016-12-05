@@ -67,7 +67,6 @@
 # Need to test this
 - name: installing emagent
   shell: cd /tmp/ansible_emagent;
-         su {{ _emagent.user }};
          ./agentDeploy.sh
          AGENT_BASE_DIR={{ emagent_base }}/{{ emagent_dir }}
          AGENT_INSTANCE_HOME={{ emagent_base }}/{{ emagent_dir }}/agent_inst
@@ -76,7 +75,7 @@
          OMS_HOST={{ emagent_oms_host }}
          EM_UPLOAD_PORT={{ emagent_oms_port }}
          AGENT_REGISTRATION_PASSWORD={{ emagent_oms_password }}
-  #become_user: "{{ _emagent.user }}"
+  become_user: "{{ _emagent.user }}"
   tags: install
 
 - name: removing oem agent installer
