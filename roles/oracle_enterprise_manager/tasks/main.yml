@@ -64,7 +64,16 @@
   tags: install
   when: get.changed
 
-- name: Make folder
+- name: emagent installer fix permissions
+  file:
+    path: /tmp/ansible_emagent
+    recurse: yes
+    owner: '{{ _emagent.user }}'
+    group: '{{ _emagent.group }}'
+    mode: 0750
+
+
+- name: Make agent12c folder and set permissions
   file:
     path: /opt/oracle/agent12c
     state: directory
