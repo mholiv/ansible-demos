@@ -60,7 +60,7 @@
   register: get
 
 - name: Unzip emagent installer
-  command: 'unzip -f /tmp/oem_agent_core.zip -d /tmp/ansible_emagent'
+  command: 'unzip /tmp/oem_agent_core.zip -d /tmp/ansible_emagent'
   tags: install
   when: get.changed
 
