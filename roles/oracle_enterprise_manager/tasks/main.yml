@@ -67,7 +67,7 @@
 # Need to test this
 - name: installing emagent
   shell: cd /tmp/ansible_emagent;
-         sudo su {{ _emagent.user }};
+         runuser -u {{ _emagent.user }} -c
          ./agentDeploy.sh
          AGENT_BASE_DIR={{ emagent_base }}/{{ emagent_dir }}
          AGENT_INSTANCE_HOME={{ emagent_base }}/{{ emagent_dir }}/agent_inst
