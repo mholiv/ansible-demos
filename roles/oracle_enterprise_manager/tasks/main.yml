@@ -52,11 +52,15 @@
 #     dest: /tmp/ansible_emagent
 #   tags: install
 
+- name: get installer
+  get_url:
+    url: '{{ oem_zip_path }}'
+    dest:
+
 - name: uploading emagent installer
   unarchive:
-    src: '{{ oem_zip_path }}'
+    src: /tmp/oem_agent_core.zip
     dest: /tmp/ansible_emagent
-    remote_src: yes
   tags: install
 
 # Need to test this
