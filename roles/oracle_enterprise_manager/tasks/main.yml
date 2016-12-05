@@ -55,7 +55,7 @@
 - name: get installer
   get_url:
     url: '{{ oem_zip_path }}'
-    dest:
+    dest: /tmp/oem_agent_core.zip
 
 - name: uploading emagent installer
   unarchive:
