@@ -64,30 +64,27 @@
   tags: install
   when: get.changed
 
-# # Need to test this
-# - name: installing emagent
-#   shell: cd /tmp/ansible_emagent;
-#          sudo su {{ _emagent.user }};
-#          ./agentDeploy.sh
-#          AGENT_BASE_DIR={{ emagent_base }}/{{ emagent_dir }}
-#          AGENT_INSTANCE_HOME={{ emagent_base }}/{{ emagent_dir }}/agent_inst
-#          ORACLE_HOSTNAME={{ inventory_hostname }}
-#          AGENT_PORT={{ emagent_port }}
-#          OMS_HOST={{ emagent_oms_host }}
-#          EM_UPLOAD_PORT={{ emagent_oms_port }}
-#          AGENT_REGISTRATION_PASSWORD={{ emagent_oms_password }}
-#   become: true
-#   become_user: "{{ _emagent.user }}"
-#   become_method: sudo
-#   tags: install
 # Need to test this
-
 - name: installing emagent
-  command: '/usr/sbin/runuser -l {{ _emagent.user }} -c /tmp/ansible_emagent/agentDeploy.sh AGENT_BASE_DIR={{ emagent_base }}/{{ emagent_dir }} AGENT_INSTANCE_HOME={{ emagent_base }}/{{ emagent_dir }}/agent_inst ORACLE_HOSTNAME={{ inventory_hostname }} AGENT_PORT={{ emagent_port }} OMS_HOST={{ emagent_oms_host }} EM_UPLOAD_PORT={{ emagent_oms_port }} AGENT_REGISTRATION_PASSWORD={{ emagent_oms_password }}'
-  args:
-    chdir: /tmp/ansible_emagent/
-  #become_user: "{{ _emagent.user }}"
+  shell: cd /tmp/ansible_emagent;
+         /usr/sbin/runuser -l {{ _emagent.user }} -c ./agentDeploy.sh
+         AGENT_BASE_DIR={{ emagent_base }}/{{ emagent_dir }}
+         AGENT_INSTANCE_HOME={{ emagent_base }}/{{ emagent_dir }}/agent_inst
+         ORACLE_HOSTNAME={{ inventory_hostname }}
+         AGENT_PORT={{ emagent_port }}
+         OMS_HOST={{ emagent_oms_host }}
+         EM_UPLOAD_PORT={{ emagent_oms_port }}
+         AGENT_REGISTRATION_PASSWORD={{ emagent_oms_password }}
   tags: install
+
+#Need to test this
+
+# - name: installing emagent
+#   command: '/usr/sbin/runuser -l {{ _emagent.user }} -c /tmp/ansible_emagent/agentDeploy.sh AGENT_BASE_DIR={{ emagent_base }}/{{ emagent_dir }} AGENT_INSTANCE_HOME={{ emagent_base }}/{{ emagent_dir }}/agent_inst ORACLE_HOSTNAME={{ inventory_hostname }} AGENT_PORT={{ emagent_port }} OMS_HOST={{ emagent_oms_host }} EM_UPLOAD_PORT={{ emagent_oms_port }} AGENT_REGISTRATION_PASSWORD={{ emagent_oms_password }}'
+#   args:
+#     chdir: /tmp/ansible_emagent/
+#   #become_user: "{{ _emagent.user }}"
+#   tags: install
 
 - name: removing oem agent installer
   file:
