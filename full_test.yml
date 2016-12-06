@@ -1,0 +1,7 @@
+---
+
+- name: Test install all
+  hosts: all
+  roles:
+    - roles/symantec-endpoint-protection
+    - roles/splunk
