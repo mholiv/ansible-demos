@@ -1,0 +1,30 @@
+---
+# tasks file for httpd
+- name: template a file
+  template:
+    dest: /tmp/myfile.txt
+    src: ../templates/myfile.txt.j2
+  register: myfile_info
+
+- name: Ensure file does not exist
+  file:
+    path: /tmp/dale-file.touch
+    state: absent
+  when: not myfile_info.changed
+
+- name: Install httpd
+  yum:
+    name: httpd
+    state: present
+
+- name: enable httpd
+  service:
+    name: httpd
+    state: started
+    enabled: yes
+
+- name: Add apache conf.d file
+  template:
+    src: ../templates/awx.conf.j2
+    dest: /tmp/awx.conf
+  notify: Restart Apache

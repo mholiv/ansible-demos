@@ -1,0 +1,6 @@
+---
+
+- name: First playbook
+  hosts: all
+  roles:
+    - roles/httpd
