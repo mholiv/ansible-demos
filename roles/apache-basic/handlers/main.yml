@@ -1,0 +1,7 @@
+---
+# handlers file for apache-basic
+- name: set up apache
+  service:
+    name: httpd
+    state: started
+    enabled: true

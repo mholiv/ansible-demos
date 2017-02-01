@@ -1,0 +1,5 @@
+---
+- name: basic role stack
+  hosts: all
+  roles:
+    - roles/apache-basic

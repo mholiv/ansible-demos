@@ -1,0 +1,46 @@
+---
+- name: My first play
+  hosts: all
+  vars:
+    user_name: Me!!!!!
+  tasks:
+    - name: basic copy
+      copy:
+        dest: /tmp/
+        src: copy_me
+
+    - name: thing we can use
+      template:
+        src: temp_examp.j2
+        dest: /tmp/temp_examp.txt
+
+    - name: install apache
+      yum:
+        name: httpd
+        state: present
+      notify: set up apache
+
+    - name: use template
+      template:
+        src: apache.j2
+        dest: /tmp/apache.conf
+      notify: set up apache
+      register: apac_conf
+
+    - name: change_lineinfile
+      lineinfile:
+        dest: /etc/redhat-release
+        line: Modified by ansible
+        state: present
+
+    - name: dirty command
+      command: echo 'hi'
+      when: apac_conf.changed
+
+
+  handlers:
+    - name: set up apache
+      service:
+        name: httpd
+        state: started
+        enabled: true
